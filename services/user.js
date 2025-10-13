@@ -5,16 +5,14 @@ const saltRounds = 10;
 const minPasswordLen = 8;
 const TokenDataAccess = require('../data/token');
 const jwt = require('jsonwebtoken');
-
+const { EMAIL_ERROR } = require('../utils/constant');
 class UserService {
   static async signUp({ email, password }) {
+    console.log('email:', email);
+    console.log('password:', password);
     const existingUser = await UserDataAccess.getUser({ email });
     if (existingUser) {
       throw new Error(ERRORS.EXISTING_USER)
-    }
-    if (password.length < minPasswordLen) {
-      throw new Error(ERRORS.MIN_PASSWORD_LEN);
-
     }
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     return await UserDataAccess.signUp({ email, hashedPassword });
@@ -63,8 +61,8 @@ class UserService {
   static async logOut({ userId }) {
     return await UserDataAccess.logOut({ userId });
   }
-  static async getselfUser({ userId }){
-    return await UserDataAccess.getselfUser({userId});
+  static async getselfUser({ userId }) {
+    return await UserDataAccess.getselfUser({ userId });
   }
 }
 module.exports = UserService;

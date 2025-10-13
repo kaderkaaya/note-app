@@ -6,8 +6,13 @@ const { signUp,
     getselfUser,
     logOut,
 } = require('../controllers/user')
-
-router.post('/signUp', signUp);
+const UserController = require('../controllers/user');
+const UserSchema = require('../schemas/userSchema');
+const { validateSchemaBody
+} = require('../helpers/schemaHelper');
+router.post('/signUp',
+    validateSchemaBody(UserSchema.signUp),
+    UserController.signUp);
 router.post('/login', login);
 router.post('/updateUser', updateUser);
 router.post('/logOut', logOut);

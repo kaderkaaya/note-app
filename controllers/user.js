@@ -1,5 +1,8 @@
 const UserService = require('../services/user');
 const ErrorHelper = require('../helpers/errorHelper');
+const UserSchema = require('../schemas/userSchema');
+const { validateSchemaBody } = require('../helpers/schemaHelper');
+
 class UserController {
     static async signUp(req, res) {
         try {
@@ -7,6 +10,8 @@ class UserController {
             const user = await UserService.signUp({ email, password });
             return ErrorHelper.sendSuccess({ code: 201, data: user, res })
         } catch (error) {
+            console.log('error', error);
+
             return ErrorHelper.sendError({ res, error, code: 502 });
         }
 
