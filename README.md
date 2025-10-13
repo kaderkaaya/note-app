@@ -44,7 +44,7 @@
 ## 🛠 Setup
 
 ```bash
-git clone <repo-url>
+git clone <https://github.com/kaderkaaya/note-app.git>
 cd project
 npm install
 npm run dev
