@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const UserController = require('../controllers/user');
+const asyncHandler = require('express-async-handler');
 const UserSchema = require('../schemas/userSchema');
 const { validateSchemaBody,
         validateSchemaQuery,
@@ -8,7 +9,7 @@ const { validateSchemaBody,
 
 router.post('/signUp',
     validateSchemaBody(UserSchema.signUp),
-    UserController.signUp);
+    asyncHandler(UserController.signUp));
 router.post('/login',
     validateSchemaBody(UserSchema.login),
     UserController.login);

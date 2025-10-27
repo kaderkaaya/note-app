@@ -5,14 +5,9 @@ const { validateSchemaBody } = require('../helpers/schemaHelper');
 
 class UserController {
     static async signUp(req, res, next) {
-        try {
             const { email, password } = req.body;
             const user = await UserService.signUp({ email, password });
             return ErrorHelper.sendSuccess({ code: 201, data: user, res })
-        } catch (error) {    
-            return ErrorHelper.sendError({ res, error, code: 502 });
-        }
-
     };
     static async login(req, res) {
         try {
