@@ -2,20 +2,37 @@ const UserDataAccess = require('../data/user');
 const ERRORS = require('../utils/errors');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const minPasswordLen = 8;
 const TokenDataAccess = require('../data/token');
 const jwt = require('jsonwebtoken');
 const { EMAIL_ERROR } = require('../utils/constant');
+
 class UserService {
   static async signUp({ email, password }) {
-    console.log('email:', email);
-    console.log('password:', password);
+    let mailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,}$/;
     const existingUser = await UserDataAccess.getUser({ email });
     if (existingUser) {
       throw new Error(ERRORS.EXISTING_USER)
     }
+    //RegEx kullanarak Email Kontrolu yapildi.
+    const validateEmail = email.match(mailRegex);
+    const validatePassword = passwordRegex.test(password);
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    return await UserDataAccess.signUp({ email, hashedPassword });
+    if (validateEmail && validatePassword) {
+      return await UserDataAccess.signUp({ email, hashedPassword });
+    } else {
+      if (!validateEmail) {
+        throw new Error('Girdiginiz mail adresi gecersizdir.');
+      }
+      if (!validatePassword) {
+        throw new Error(`Parola aşagidaki sartlari saglamali:
+                         - En az 1 kucukk harf
+                         - En az 1 buyuk harf
+                         - En az 1 rakam
+                         - En az 1 ozel karakter (@.#$!%*?&)
+                         - En az 8 karakter uzunluk`);
+      }
+    }
   };
   static async login({ email, password }) {
     const now = Math.floor(Date.now() / 1000);
@@ -63,6 +80,6 @@ class UserService {
   }
   static async getselfUser({ userId }) {
     return await UserDataAccess.getselfUser({ userId });
-  }
+  } 
 }
 module.exports = UserService;
