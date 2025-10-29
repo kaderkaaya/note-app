@@ -9,6 +9,7 @@ const { validateSchemaBody,
 
 router.post('/signUp',
     validateSchemaBody(UserSchema.signUp),
+    //async handler konusuna çalışıldı.
     asyncHandler(UserController.signUp));
 router.post('/login',
     validateSchemaBody(UserSchema.login),
