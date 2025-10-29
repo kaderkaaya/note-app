@@ -1,17 +1,20 @@
 const UserDataAccess = require('../data/user');
-const ERRORS = require('../utils/errors');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const TokenDataAccess = require('../data/token');
 const jwt = require('jsonwebtoken');
-
+const ApiError = require('../helpers/apiHelper')
+const { EMAIL_ERROR,
+  PASSWORD_ERROR,
+  EXISTING_USER
+} = require('../utils/errors');
 class UserService {
   static async signUp({ email, password }) {
     let mailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,}$/;
     const existingUser = await UserDataAccess.getUser({ email });
     if (existingUser) {
-      throw new Error(ERRORS.EXISTING_USER)
+      throw new ApiError(EXISTING_USER.message, EXISTING_USER, statusCode)
     }
     //RegEx kullanarak Email Kontrolu yapildi.
     const validateEmail = email.match(mailRegex);
@@ -21,15 +24,10 @@ class UserService {
       return await UserDataAccess.signUp({ email, hashedPassword });
     } else {
       if (!validateEmail) {
-        throw new Error('Girdiginiz mail adresi gecersizdir.');
+        throw new ApiError(EMAIL_ERROR.message, EMAIL_ERROR.statusCode);
       }
       if (!validatePassword) {
-        throw new Error(`Parola aşagidaki sartlari saglamali:
-                         - En az 1 kucukk harf
-                         - En az 1 buyuk harf
-                         - En az 1 rakam
-                         - En az 1 ozel karakter (@.#$!%*?&)
-                         - En az 8 karakter uzunluk`);
+        throw new ApiError(PASSWORD_ERROR.message, PASSWORD_ERROR.statusCode);
       }
     }
   };
@@ -60,12 +58,12 @@ class UserService {
         const hashedPassword = await UserDataAccess.getUserpass({ userId: user._id });
         isMatch = await bcrypt.compare(password, hashedPassword.password);
         if (isMatch === false) {
-          throw new Error('Sifreniz Yanlis')
+          throw new ApiError(PASS_ERROR.message, PASS_ERROR.statusCode)
         }
       }
     }
     else {
-      throw new Error('Kullanici Bulunamadı')
+      throw new ApiError(USER_ERROR.message, USER_ERROR.statusCode)
     }
     await UserDataAccess.IsLogged({ userId: user._id });
     return { user }
@@ -79,6 +77,6 @@ class UserService {
   }
   static async getselfUser({ userId }) {
     return await UserDataAccess.getselfUser({ userId });
-  } 
+  }
 }
 module.exports = UserService;
