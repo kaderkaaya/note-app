@@ -13,5 +13,5 @@ app.use(express.json());
 app.use('/user', userRoutes);
 app.use('/token', tokenRouter);
 app.listen(PORT, () => {
-   console.log(`@@@@@@@@@@@@@@ -> PORT bağlantısı okkkk!!!!${PORT}`)
+   console.log(`@@@@@@@@@@@@@@ -> PORT:${PORT}`)
 })
