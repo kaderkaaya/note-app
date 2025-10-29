@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const TokenDataAccess = require('../data/token');
 const jwt = require('jsonwebtoken');
-const { EMAIL_ERROR } = require('../utils/constant');
 
 class UserService {
   static async signUp({ email, password }) {

@@ -1,4 +1,5 @@
-import winston from 'winston';
+const winston = require('winston');
+const { combine, timestamp, json } = winston.format;
 
 const logger = winston.createLogger({
     level: 'info',
@@ -14,4 +15,8 @@ const logger = winston.createLogger({
      ],
 
 });
-export default logger;
+//burda fonksiyon olarak ekledik. aslinda obje olarakta yapabiliriz aynı olur ama ben app dosyasında
+//sürekli calismasini istiyorum.
+module.exports = {
+  createLogger: () => logger
+};

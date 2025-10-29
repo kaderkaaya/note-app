@@ -1,3 +1,3 @@
 module.exports = {
-    EMAIL_ERROR: { error: 'emaail' },
+    USER_STATUS: { },
 }
