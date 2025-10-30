@@ -41,7 +41,6 @@ class UserDataAccess {
   }
   static async hashedPass({ userId, password }) {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    console.log('hashedPassword', hashedPassword)
     return hashedPassword;
   }
   static async logOut({ userId }) {
