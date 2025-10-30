@@ -25,4 +25,8 @@ module.exports = {
         statusCode: 105,
         message: 'User not found'
     },
+    TOKEN_ERROR: {
+        statusCode: 106,
+        message: 'Token Error'
+    },
 }

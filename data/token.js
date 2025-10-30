@@ -3,7 +3,10 @@ const { default: mongoose } = require('mongoose');
 const TokenModel = require('../models/token');
 const JWT_KEY = process.env.JWT_SECRET;
 const jwt = require('jsonwebtoken');
-
+const ApiError = require('../helpers/apiHelper');
+const {
+    TOKEN_ERROR
+} = require('../utils/errors');
 class TokenDataAccess {
     static async generateToken({ userId }) {
         console.log('JWT_KEY', JWT_KEY)
@@ -19,13 +22,14 @@ class TokenDataAccess {
             const decode = jwt.verify(token, JWT_KEY);
             return { valid: true, decode, token }
         } catch (error) {
-            error.name === 'TokenExpiredError'
-            const payload = jwt.decode(token)
-            if (!payload?.userId) {
-                throw new Error('Gecersiz token payloadiiii');
+            if (error.name === 'TokenExpiredError') {
+                const payload = jwt.decode(token)
+                if (!payload?.userId) {
+                    throw new ApiError(TOKEN_ERROR.message, TOKEN_ERROR.statusCode);
+                }
+                const newToken = await this.generateToken({ userId: payload.userId });
+                return { newToken };
             }
-            const newToken = await this.generateToken({ userId: payload.userId });
-            return { newToken };
         }
     };
     static async getUserToken({ userId }) {

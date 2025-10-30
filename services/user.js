@@ -6,7 +6,8 @@ const jwt = require('jsonwebtoken');
 const ApiError = require('../helpers/apiHelper')
 const { EMAIL_ERROR,
   PASSWORD_ERROR,
-  EXISTING_USER
+  EXISTING_USER,
+  USER_ERROR,
 } = require('../utils/errors');
 class UserService {
   static async signUp({ email, password }) {
@@ -32,41 +33,29 @@ class UserService {
     }
   };
   static async login({ email, password }) {
-    const now = Math.floor(Date.now() / 1000);
     const user = await UserDataAccess.getUser({ email });
-    if (user) {
-      const userToken = await TokenDataAccess.getUserToken({ userId: user._id });
-      if (userToken) {
-        const payload = jwt.decode(userToken.token);
-        if (userToken && payload.exp < now) {
-          const token = await TokenDataAccess.verifyToken({ token: userToken.token });
-          return {
-            ...user._doc,
-            token
-          };
-        }
-      }
-      else {
-        const { token } = await TokenDataAccess.generateToken({ userId: user._id });
-        return {
-          ...user._doc,
-          token
-        };
-      }
-      if (user && password) {
-        let isMatch;
-        const hashedPassword = await UserDataAccess.getUserpass({ userId: user._id });
-        isMatch = await bcrypt.compare(password, hashedPassword.password);
-        if (isMatch === false) {
-          throw new ApiError(PASS_ERROR.message, PASS_ERROR.statusCode)
-        }
-      }
-    }
-    else {
+    if (!user) {
       throw new ApiError(USER_ERROR.message, USER_ERROR.statusCode)
     }
+    let isMatch;
+    const hashedPassword = await UserDataAccess.getUserpass({ userId: user._id });
+    isMatch = await bcrypt.compare(password, hashedPassword.password);
+    if (isMatch === false) {
+      throw new ApiError(PASS_ERROR.message, PASS_ERROR.statusCode)
+    }
+    const userToken = await TokenDataAccess.getUserToken({ userId: user._id });
+    let token ;
+    if (userToken) {
+       token = await TokenDataAccess.verifyToken({ token: userToken.token })
+    }
+    else {
+        token  = await TokenDataAccess.generateToken({ userId: user._id });
+    }
     await UserDataAccess.IsLogged({ userId: user._id });
-    return { user }
+    return {
+      ...user._doc,
+      token
+    };
   }
   static async updateUser({ email, password, name, userId }) {
     const updatedUser = await UserDataAccess.updateUser({ email, name, password, userId });
