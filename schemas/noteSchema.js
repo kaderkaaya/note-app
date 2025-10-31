@@ -25,6 +25,7 @@ module.exports = {
         ownerId: Joi.string().required(),
         page: Joi.number().optional(),
         limit: Joi.number().optional(),
+        search: Joi.string().optional(),
     }),
     deleteNote: Joi.object({
         ownerId: Joi.string().required(),

@@ -5,7 +5,7 @@ const saltRounds = 10;
 class UserDataAccess {
   static async signUp({ email, hashedPassword }) {
     const user = await UserModel.create({ email, password: hashedPassword });
-    return user;
+    return { user };
   }
   static async getUser({ email }) {
     const user = await UserModel.findOne({ email });
@@ -53,6 +53,12 @@ class UserDataAccess {
   static async getselfUser({ userId }) {
     const user = await UserModel.findById({
       _id: userId
+    });
+    return { user }
+  };
+  static async getUserWithId({ ownerId }) {
+    const user = await UserModel.findById({
+      _id: ownerId
     });
     return { user }
   }

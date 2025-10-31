@@ -1,5 +1,6 @@
 const NoteModel = require('../models/note');
 const { NOTE_STATUS } = require('../utils/constant');
+const mongoose = require('mongoose');
 
 class NoteDataAccess {
     static async addNote({ ownerId, title, body, isPrivate, tags }) {
@@ -18,7 +19,7 @@ class NoteDataAccess {
             ownerId,
             _id: noteId
         });
-        return note;
+        return { note };
     };
     static async updateNote({ ownerId, noteId, title, body, isPrivate, tags, noteStatus }) {
         const updateNote = {};
@@ -36,19 +37,66 @@ class NoteDataAccess {
         }
         if (noteStatus !== undefined) {
             updateNote.noteStatus = noteStatus;
-        }   
-        return await NoteModel.findOneAndUpdate(
+        }
+        const note = await NoteModel.findOneAndUpdate(
             {
                 ownerId,
                 _id: noteId
             },
             {
-                $set: updateNote 
+                $set: updateNote
             },
             {
                 new: true,
             }
-        )
+        );
+        return { note }
+    };
+    static async getAllNotes({ ownerId, page, limit, search }) {
+        const objectOwnerId = new mongoose.Types.ObjectId(ownerId);
+        const limitNum = Number(limit)
+        const totalNotes = await NoteModel.countDocuments({ ownerId });
+        const result =[
+            { 
+                 $match: { ownerId: objectOwnerId,
+                    title: { $regex: search, $options: "i" } 
+                 },
+              
+         },
+            // {
+            //     $group: {
+            //         _id: "$ownerId",
+            //         noteCount: { $sum: 1 }
+            //     }
+            // },
+            {
+                $lookup: {
+                    from: 'notes',
+                    pipeline: [
+                        { $match: { ownerId: objectOwnerId } },
+                        { $count: 'totalNotes' }
+                    ],
+                    as: 'totNotes'
+                },
+            },
+            // {
+            //     $addFields:{
+            //         totalNotes:{$arrayElemAt:['$totNotes.totalNotes',0]}
+            //     }
+            // },
+        ];
+        if(page && limit){
+            const skip = (page) * limitNum;
+            result.push({$skip:skip})
+            result.push({$limit:limitNum})
+           
+        }
+        const notes = await NoteModel.aggregate(result);
+        return {
+            notes,
+            totalNotes
+        };
+
     }
 }
 module.exports = NoteDataAccess;
