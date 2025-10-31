@@ -9,7 +9,6 @@ const {
 } = require('../utils/errors');
 class TokenDataAccess {
     static async generateToken({ userId }) {
-        console.log('JWT_KEY', JWT_KEY)
         const token = jwt.sign({ userId }, JWT_KEY, { expiresIn: '1h' });
         await TokenModel.create({
             token,

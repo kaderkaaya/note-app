@@ -16,7 +16,7 @@ router.get('/getNote',
     NoteContoller.getNote,
 );
 router.post('/updateNote',
-    validateSchemaQuery(NoteSchema.updateNote),
+    validateSchemaBody(NoteSchema.updateNote),
     NoteContoller.updateNote,
 );
 router.get('/getAllNotes',
@@ -24,7 +24,7 @@ router.get('/getAllNotes',
     NoteContoller.getAllNotes,
 );
 router.post('/deleteNote',
-    validateSchemaQuery(NoteSchema.deleteNote),
+    validateSchemaBody(NoteSchema.deleteNote),
     NoteContoller.deleteNote,
 );
 

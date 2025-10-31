@@ -9,6 +9,7 @@ const noteSchema = new Schema({
      body: { type: String },
      isPrivate: { type: Boolean, default: false },
      tags: { type: [String] },
+     noteStatus: { type: Number, default:1 }
 },
      { timestamps: true },
 );

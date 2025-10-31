@@ -18,7 +18,8 @@ module.exports = {
         title: Joi.string().optional(),
         body: Joi.string().optional(),
         isPrivate: Joi.bool().optional(),
-        tags: Joi.array().items(Joi.string()).optional()
+        tags: Joi.array().items(Joi.string()).optional(),
+        noteStatus:Joi.number().optional(),
     }),
     getAllNotes: Joi.object({
         ownerId: Joi.string().required(),

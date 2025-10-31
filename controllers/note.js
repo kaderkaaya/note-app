@@ -18,8 +18,8 @@ class NoteController {
     };
     static async updateNote(req, res, next) {
         try {
-            const { ownerId, noteId, title, body, isPrivate, tags } = req.body;
-            const note = await NoteService.updateNote({ ownerId, noteId, title, body, isPrivate, tags });
+            const { ownerId, noteId, title, body, isPrivate, tags, noteStatus } = req.body;
+            const note = await NoteService.updateNote({ ownerId, noteId, title, body, isPrivate, tags, noteStatus });   
             return ErrorHelper.sendSuccess({ code: 201, data: note, res })
         } catch (error) {
             console.log('error', error);

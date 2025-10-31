@@ -10,6 +10,7 @@ const app = express();
 DB();
 const LOGGER = require('./utils/logger');
 LOGGER.createLogger();
+
 app.use(express.json());
 
 app.use('/user', userRoutes);
