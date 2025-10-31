@@ -11,5 +11,12 @@ class NoteDataAccess {
         });
         return note;
     }
+    static async getNote({ ownerId, noteId }) {
+        const note = await NoteModel.findOne({
+            ownerId,
+            _id:noteId
+        });
+        return note;
+    }
 }
 module.exports = NoteDataAccess;

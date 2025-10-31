@@ -11,6 +11,22 @@ router.post('/addNote',
     validateSchemaBody(NoteSchema.addNote),
     asyncHandler(NoteContoller.addNote),
 );
+router.get('/getNote',
+    validateSchemaQuery(NoteSchema.getNote),
+    NoteContoller.getNote,
+);
+router.post('/updateNote',
+    validateSchemaQuery(NoteSchema.updateNote),
+    NoteContoller.updateNote,
+);
+router.get('/getAllNotes',
+    validateSchemaQuery(NoteSchema.getAllNotes),
+    NoteContoller.getAllNotes,
+);
+router.post('/deleteNote',
+    validateSchemaQuery(NoteSchema.deleteNote),
+    NoteContoller.deleteNote,
+);
 
 
 module.exports = router;

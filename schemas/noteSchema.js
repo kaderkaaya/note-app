@@ -8,4 +8,24 @@ module.exports = {
         isPrivate: Joi.bool().optional(),
         tags: Joi.array().items(Joi.string()).optional()
     }),
+    getNote: Joi.object({
+        ownerId: Joi.string().required(),
+        noteId: Joi.string().required(),
+    }),
+    updateNote: Joi.object({
+        noteId: Joi.string().required(),
+        title: Joi.string().optional(),
+        body: Joi.string().optional(),
+        isPrivate: Joi.bool().optional(),
+        tags: Joi.array().items(Joi.string()).optional()
+    }),
+    getAllNotes: Joi.object({
+        ownerId: Joi.string().required(),
+        page: Joi.number().optional(),
+        limit: Joi.number().optional(),
+    }),
+    deleteNote: Joi.object({
+        ownerId: Joi.string().required(),
+        noteId: Joi.string().required(),
+    })
 };
