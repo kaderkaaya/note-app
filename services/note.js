@@ -26,6 +26,15 @@ class NoteService {
         if (user) {
             return await NoteDataAccess.getAllNotes({ ownerId, page, limit, search });
         };
-    }
+    };
+    static async deleteNote({ ownerId, noteId, noteStatus }) {
+         const note = await NoteDataAccess.getNote({ ownerId, noteId });
+         if (note) {
+             return NoteDataAccess.deleteNote({ ownerId, noteId, noteStatus })
+         }
+         else {
+            throw new ApiError(NOTE_ERROR.message, NOTE_ERROR.statusCode)
+        }
+    };
 }
 module.exports = NoteService;

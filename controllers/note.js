@@ -36,8 +36,8 @@ class NoteController {
     };
     static async deleteNote(req, res, next) {
         try {
-            const { ownerId, noteId } = req.body;
-            const note = await NoteService.deleteNote({ ownerId, noteId });
+            const { ownerId, noteId, noteStatus } = req.body;
+            const note = await NoteService.deleteNote({ ownerId, noteId, noteStatus });
             return ErrorHelper.sendSuccess({ code: 201, data: note, res })
         } catch (error) {
             res.status(500).send({ error: `error:${error}` })

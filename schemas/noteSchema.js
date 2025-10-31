@@ -30,5 +30,6 @@ module.exports = {
     deleteNote: Joi.object({
         ownerId: Joi.string().required(),
         noteId: Joi.string().required(),
+        noteStatus:Joi.number().optional(),
     })
 };

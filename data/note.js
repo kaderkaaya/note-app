@@ -56,13 +56,14 @@ class NoteDataAccess {
         const objectOwnerId = new mongoose.Types.ObjectId(ownerId);
         const limitNum = Number(limit)
         const totalNotes = await NoteModel.countDocuments({ ownerId });
-        const result =[
-            { 
-                 $match: { ownerId: objectOwnerId,
-                    title: { $regex: search, $options: "i" } 
-                 },
-              
-         },
+        const result = [
+            {
+                $match: {
+                    ownerId: objectOwnerId,
+                    title: { $regex: search, $options: "i" }
+                },
+
+            },
             // {
             //     $group: {
             //         _id: "$ownerId",
@@ -85,11 +86,11 @@ class NoteDataAccess {
             //     }
             // },
         ];
-        if(page && limit){
+        if (page && limit) {
             const skip = (page) * limitNum;
-            result.push({$skip:skip})
-            result.push({$limit:limitNum})
-           
+            result.push({ $skip: skip })
+            result.push({ $limit: limitNum })
+
         }
         const notes = await NoteModel.aggregate(result);
         return {
@@ -97,6 +98,21 @@ class NoteDataAccess {
             totalNotes
         };
 
+    };
+    static async deleteNote({ ownerId, noteId, noteStatus }) {
+        const objectOwnerId = new mongoose.Types.ObjectId(ownerId);
+        const objectNoteId = new mongoose.Types.ObjectId(noteId);
+        const note = await NoteModel.findOneAndUpdate(
+            {
+                _id: objectNoteId,
+                ownerId: objectOwnerId
+            },
+            {
+                $set: {noteStatus: noteStatus}
+            },
+            { new: true }
+        );
+        return { note }
     }
 }
 module.exports = NoteDataAccess;
