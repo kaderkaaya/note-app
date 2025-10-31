@@ -13,6 +13,7 @@ module.exports = {
         noteId: Joi.string().required(),
     }),
     updateNote: Joi.object({
+        ownerId :Joi.string().required(),
         noteId: Joi.string().required(),
         title: Joi.string().optional(),
         body: Joi.string().optional(),

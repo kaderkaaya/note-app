@@ -17,6 +17,9 @@ class NoteDataAccess {
             _id:noteId
         });
         return note;
+    };
+    static async updateNote({ownerId, noteId, title, body, isPrivate, tags}){
+        
     }
 }
 module.exports = NoteDataAccess;
