@@ -14,10 +14,11 @@ router.post('/signUp',
     //async handler konusuna çalışıldı.
     asyncHandler(UserController.signUp));
 router.post('/login',
-        limiter,
+    limiter,
     validateSchemaBody(UserSchema.login),
     UserController.login);
 router.post('/updateUser',
+    limiter,
     validateSchemaBody(UserSchema.updateUser),
     UserController.updateUser);
 router.post('/logOut',
