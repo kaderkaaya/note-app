@@ -3,6 +3,8 @@ const router = express.Router();
 const UserController = require('../controllers/user');
 const asyncHandler = require('express-async-handler');
 const UserSchema = require('../schemas/userSchema');
+const limiter = require('../helpers/bruteforceHelper');
+
 const { validateSchemaBody,
     validateSchemaQuery,
 } = require('../helpers/schemaHelper');
@@ -12,6 +14,7 @@ router.post('/signUp',
     //async handler konusuna çalışıldı.
     asyncHandler(UserController.signUp));
 router.post('/login',
+        limiter,
     validateSchemaBody(UserSchema.login),
     UserController.login);
 router.post('/updateUser',
