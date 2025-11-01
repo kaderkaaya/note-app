@@ -108,7 +108,7 @@ class NoteDataAccess {
                 ownerId: objectOwnerId
             },
             {
-                $set: {noteStatus: noteStatus}
+                $set: { noteStatus: noteStatus }
             },
             { new: true }
         );

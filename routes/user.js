@@ -4,7 +4,7 @@ const UserController = require('../controllers/user');
 const asyncHandler = require('express-async-handler');
 const UserSchema = require('../schemas/userSchema');
 const { validateSchemaBody,
-        validateSchemaQuery,
+    validateSchemaQuery,
 } = require('../helpers/schemaHelper');
 
 router.post('/signUp',
@@ -23,4 +23,7 @@ router.post('/logOut',
 router.get('/getselfUser',
     validateSchemaQuery(UserSchema.getselfUser),
     UserController.getselfUser);
+router.post('/uploadProfileImg',
+    validateSchemaBody(UserSchema.uploadProfileImg),
+    UserController.uploadProfileImg)
 module.exports = router;

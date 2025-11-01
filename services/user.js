@@ -44,12 +44,12 @@ class UserService {
       throw new ApiError(PASS_ERROR.message, PASS_ERROR.statusCode)
     }
     const userToken = await TokenDataAccess.getUserToken({ userId: user._id });
-    let token ;
+    let token;
     if (userToken) {
-       token = await TokenDataAccess.verifyToken({ token: userToken.token })
+      token = await TokenDataAccess.verifyToken({ token: userToken.token })
     }
     else {
-        token  = await TokenDataAccess.generateToken({ userId: user._id });
+      token = await TokenDataAccess.generateToken({ userId: user._id });
     }
     await UserDataAccess.IsLogged({ userId: user._id });
     return {
@@ -63,9 +63,12 @@ class UserService {
   };
   static async logOut({ userId }) {
     return await UserDataAccess.logOut({ userId });
-  }
+  };
   static async getselfUser({ userId }) {
     return await UserDataAccess.getselfUser({ userId });
-  }
+  };
+  static async uploadProfileImg({ userId, imagePath  }) {
+     return await UserDataAccess.uploadProfileImg({userId, imagePath });
+    }
 }
 module.exports = UserService;

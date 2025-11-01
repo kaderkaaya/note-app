@@ -21,4 +21,8 @@ module.exports = {
     getselfUser: Joi.object({
         userId: Joi.string().required(),
     }),
+    uploadProfileImg: Joi.object({
+        userId: Joi.string().required(),
+        profileImg: Joi.string().optional(),
+    })
 }

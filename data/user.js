@@ -62,5 +62,13 @@ class UserDataAccess {
     });
     return { user }
   }
+  static async uploadProfileImg({ imagePath, userId }) {
+    const user = await UserModel.findOneAndUpdate(
+      { _id: userId },
+      { $set: { profileImg: imagePath } },
+      { new: true }
+    )
+    return { user }
+  }
 }
 module.exports = UserDataAccess;

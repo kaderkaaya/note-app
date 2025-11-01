@@ -6,9 +6,10 @@ const userSchema = new Schema({
   password: { type: String, required: true },
   name: { type: String },
   userStatus: { type: Number },
-  isLoggedIn: {type:Boolean, default:false}
+  isLoggedIn: { type: Boolean, default: false },
+  profileImg: { type: String },
 },
   { timestamps: true },
 );
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema); 
