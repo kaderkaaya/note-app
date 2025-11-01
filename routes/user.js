@@ -30,4 +30,10 @@ router.get('/getselfUser',
 router.post('/uploadProfileImg',
     validateSchemaBody(UserSchema.uploadProfileImg),
     UserController.uploadProfileImg)
+router.post('/forgotPassword',
+    validateSchemaBody(UserSchema.forgotPassword),
+    UserController.forgotPassword)
+router.post('/resetPassword',
+    validateSchemaBody(UserSchema.resetPassword),
+    UserController.resetPassword)      
 module.exports = router;
