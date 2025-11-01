@@ -33,7 +33,7 @@ router.post('/uploadProfileImg',
 router.post('/forgotPassword',
     validateSchemaBody(UserSchema.forgotPassword),
     UserController.forgotPassword)
-router.post('/resetPassword',
-    validateSchemaBody(UserSchema.resetPassword),
-    UserController.resetPassword)      
+// router.post('/resetPassword',
+//     validateSchemaBody(UserSchema.resetPassword),
+//     UserController.resetPassword)      
 module.exports = router;

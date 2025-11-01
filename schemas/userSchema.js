@@ -24,5 +24,8 @@ module.exports = {
     uploadProfileImg: Joi.object({
         userId: Joi.string().required(),
         profileImg: Joi.string().optional(),
+    }),
+    forgotPassword: Joi.object({
+        email: Joi.string().required(),
     })
 }

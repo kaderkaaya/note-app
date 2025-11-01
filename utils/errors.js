@@ -29,7 +29,7 @@ module.exports = {
         statusCode: 106,
         message: 'Token Error'
     },
-        NOTE_ERROR: {
+    NOTE_ERROR: {
         statusCode: 107,
         message: 'Note Error'
     },

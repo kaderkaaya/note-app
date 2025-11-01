@@ -3,12 +3,17 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const TokenDataAccess = require('../data/token');
 const jwt = require('jsonwebtoken');
-const ApiError = require('../helpers/apiHelper')
+const ApiError = require('../helpers/apiHelper');
+const nodemailer = require('nodemailer');
+const mailOptions = require('../utils/mail');
 const { EMAIL_ERROR,
   PASSWORD_ERROR,
   EXISTING_USER,
   USER_ERROR,
 } = require('../utils/errors');
+const SEND_EMAIL = process.env.SEND_EMAIL
+const JWT_SECRET = process.env.JWT_SECRET
+const SEND_PASSWORD = process.env.SEND_PASSWORD
 class UserService {
   static async signUp({ email, password }) {
     let mailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -35,7 +40,7 @@ class UserService {
   static async login({ email, password }) {
     const user = await UserDataAccess.getUser({ email });
     if (!user) {
-      throw new ApiError(USER_ERROR.message, USER_ERROR.statusCode)
+      throw new ApiError(USER_ERROR.message, USER_ERROR.statusCode);
     }
     let isMatch;
     const hashedPassword = await UserDataAccess.getUserpass({ userId: user._id });
@@ -67,8 +72,26 @@ class UserService {
   static async getselfUser({ userId }) {
     return await UserDataAccess.getselfUser({ userId });
   };
-  static async uploadProfileImg({ userId, imagePath  }) {
-     return await UserDataAccess.uploadProfileImg({userId, imagePath });
+  static async uploadProfileImg({ userId, imagePath }) {
+    return await UserDataAccess.uploadProfileImg({ userId, imagePath });
+  };
+  static async forgotPassword({ email }) {
+    const user = await UserDataAccess.getUser({ email });
+    if (!user) {
+      throw new ApiError(USER_ERROR.message, USER_ERROR.statusCode)
     }
+    const secret = JWT_SECRET + user.password;
+    const resetToken = jwt.sign({ id: user._id, email: user.email }, secret, { expiresIn: '1h' });
+    const resetUrl = `http://localhost:3000/user/forgotPassword?id=${user._id}&resetToken=${resetToken}`;
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: SEND_EMAIL,
+        pass: SEND_PASSWORD,
+      },
+    });
+    await transporter.sendMail(mailOptions( email = user.email, resetUrl ));
+
+  }
 }
 module.exports = UserService;
