@@ -5,7 +5,7 @@ class ErrorHelper {
     const errMessage = errorMessage || message;
 
     if (error instanceof TokenExpiredError) {
-      console.log('@@@@@@@@@@@ ->AAAAAAAAAAAAAA:', TokenExpiredError);
+      console.log('*********** ->AAAAAAAAAAAAAA:', TokenExpiredError);
       return res.status(statusCode).send({
         success: false,
         errorMessage: 'Unauthorized',
@@ -14,7 +14,7 @@ class ErrorHelper {
       })
     }
     if (code) {
-      console.log('@@@@@@@@@@@ ->BBBBBBBBBBBBB:', code);
+      console.log('*********** ->BBBBBBBBBBBBB:', code);
       const error = res.status(code).send({
         success: false,
         errorMessage: message,
@@ -23,7 +23,7 @@ class ErrorHelper {
       });
       return error;
     }
-    console.log('@@@@@@@@@@@ ->CCCCCCCCCCCCCC:', statusCode);
+    console.log('*********** ->CCCCCCCCCCCCCC:', statusCode);
     return res.status(statusCode).send({
       success: false,
       errMessage,

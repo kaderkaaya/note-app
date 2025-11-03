@@ -32,5 +32,6 @@ module.exports = {
         userId: Joi.string().required(),
         token: Joi.string().required(),
         password: Joi.string().required(),
-    })
+    }),
+    getUserIP: Joi.object({}),
 }

@@ -1,6 +1,10 @@
 const winston = require('winston');
+const fs = require('fs');
 const { combine, timestamp, json } = winston.format;
 
+if (!fs.existsSync('logs')) {
+  fs.mkdirSync('logs', { recursive: true });
+}
 const logger = winston.createLogger({
   level: 'info',
   format: combine(timestamp(), json()),
@@ -10,7 +14,7 @@ const logger = winston.createLogger({
   transports: [
     new winston.transports.Console(),
     new winston.transports.File({
-      filename: 'combined.log',
+      filename: 'logs/combined.log',
     })
   ],
 

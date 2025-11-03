@@ -29,11 +29,14 @@ router.get('/getselfUser',
     UserController.getselfUser);
 router.post('/uploadProfileImg',
     validateSchemaBody(UserSchema.uploadProfileImg),
-    UserController.uploadProfileImg)
+    UserController.uploadProfileImg);
 router.post('/forgotPassword',
     validateSchemaBody(UserSchema.forgotPassword),
-    UserController.forgotPassword)
+    UserController.forgotPassword);
 router.post('/resetPassword',
     validateSchemaBody(UserSchema.resetPassword),
-    UserController.resetPassword)      
+    UserController.resetPassword);
+router.get('/getUserIP',
+    validateSchemaQuery(UserSchema.getUserIP),
+    UserController.getUserIP);
 module.exports = router;

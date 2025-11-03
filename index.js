@@ -36,5 +36,5 @@ app.use('/token', tokenRouter);
 app.use('/note', noteRouter);
 //PORT
 app.listen(PORT, () => {
-   console.log(`@@@@@@@@@@@@@@ -> PORT: ${PORT}`)
+   console.log(`*********** -> PORT: ${PORT}`)
 })

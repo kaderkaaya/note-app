@@ -97,8 +97,14 @@ class UserController {
             res.status(500).send({ error: `${error}` })
         }
     };
-
-
+    static async getUserIP(req, res) {
+        try {
+            const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+            return ErrorHelper.sendSuccess({ code: 200, data: { ip }, res });
+        } catch (error) {
+            res.status(500).send({ error: `${error}` })
+        }
+    };
 }
 
 module.exports = UserController;
