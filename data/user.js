@@ -69,6 +69,14 @@ class UserDataAccess {
       { new: true }
     )
     return { user }
+  };
+  static async updateUserPassword({ hashedPassword, userId }) {
+    const user = await UserModel.findOneAndUpdate(
+      { _id: userId },
+      { $set: { password: hashedPassword } },
+      { new: true }
+    )
+    return { user }
   }
 }
 module.exports = UserDataAccess;

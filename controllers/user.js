@@ -86,7 +86,18 @@ class UserController {
         } catch (error) {
             res.status(500).send({ error: `${error}` })
         }
-    }
+    };
+    static async resetPassword(req, res) {
+        try {
+            const { userId, token } = req.body;
+            const { password } = req.body;
+            const user = await UserService.resetPassword({ password, userId, token });
+            return ErrorHelper.sendSuccess({ code: 200, data: user, res });
+        } catch (error) {
+            res.status(500).send({ error: `${error}` })
+        }
+    };
+
 
 }
 

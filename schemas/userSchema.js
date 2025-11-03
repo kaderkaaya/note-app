@@ -27,5 +27,10 @@ module.exports = {
     }),
     forgotPassword: Joi.object({
         email: Joi.string().required(),
+    }),
+    resetPassword: Joi.object({
+        userId: Joi.string().required(),
+        token: Joi.string().required(),
+        password: Joi.string().required(),
     })
 }

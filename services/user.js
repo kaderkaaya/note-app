@@ -10,6 +10,7 @@ const { EMAIL_ERROR,
   PASSWORD_ERROR,
   EXISTING_USER,
   USER_ERROR,
+  PASS_ERROR,
 } = require('../utils/errors');
 const SEND_EMAIL = process.env.SEND_EMAIL
 const JWT_SECRET = process.env.JWT_SECRET
@@ -20,7 +21,7 @@ class UserService {
     let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,}$/;
     const existingUser = await UserDataAccess.getUser({ email });
     if (existingUser) {
-      throw new ApiError(EXISTING_USER.message, EXISTING_USER, statusCode)
+      throw new ApiError(EXISTING_USER.message, EXISTING_USER.statusCode)
     }
     //RegEx kullanarak Email Kontrolu yapildi.
     const validateEmail = email.match(mailRegex);
@@ -90,8 +91,21 @@ class UserService {
         pass: SEND_PASSWORD,
       },
     });
-    await transporter.sendMail(mailOptions( email = user.email, resetUrl ));
+    await transporter.sendMail(mailOptions(email = user.email, resetUrl));
 
+  }
+  static async resetPassword({ password, userId, token }) {
+    const { user } = await UserDataAccess.getUserWithId({ ownerId: userId });
+    if (!user) {
+      throw new ApiError(USER_ERROR.message, USER_ERROR.statusCode)
+    }
+    const secret = JWT_SECRET + user.password;
+    const verifyToken = jwt.verify(token, secret);
+    if (verifyToken) {
+      const hashedPassword = await UserDataAccess.hashedPass({ password });
+      await UserDataAccess.updateUserPassword({ hashedPassword, userId });
+    }
+    return { user }
   }
 }
 module.exports = UserService;
