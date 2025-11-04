@@ -1,3 +1,5 @@
+---
+
 # 📝 Note App (Node.js + Express + MongoDB)
 
 A simple yet powerful **RESTful API** built with Node.js, Express.js, and MongoDB.
@@ -44,8 +46,7 @@ note-app/
 │   └── noteRoutes.js
 ├── utils/
 │   └── loginLogger.js
-├── app.js
-├── server.js
+├── index.js
 └── .env (ignored by Git)
 ```
 
@@ -93,18 +94,10 @@ note-app/
 4. **Run the app**
 
    ```bash
-  node index.js
+   node server.js
    ```
 
 ---
-
-## 🧠 Developer Notes
-
-* Winston is used strictly for **system-level logging**, keeping database operations clean.
-* The app follows a **modular architecture**, ensuring scalability and maintainability.
-* All errors are handled centrally via a custom `ErrorHelper` and `AppError` system.
-* Future improvements may include analytics dashboards or login attempt tracking within the database.
-
 
 ## 👨‍💻 Developed by
 
