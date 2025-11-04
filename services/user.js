@@ -19,6 +19,8 @@ const {
   successfulLogin,
   failedLogins
 } = require('../helpers/logginHelper');
+const successLogger = successfulLogin();
+const failLogger = failedLogins();
 class UserService {
   static async signUp({ email, password }) {
     let mailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -44,22 +46,16 @@ class UserService {
   };
   static async login({ email, password }) {
     const user = await UserDataAccess.getUser({ email });
-    console.log('user', user);
-
     if (!user) {
+      failLogger.error('Invalid User', { user, ip: '::2', reason: 'Incorrect email or password.' })
       throw new ApiError(USER_ERROR.message, USER_ERROR.statusCode);
-      //burda logla fail
     }
     let isMatch;
     const hashedPassword = await UserDataAccess.getUserpass({ userId: user._id });
     isMatch = await bcrypt.compare(password, hashedPassword.password);
-    if(email !== user.email){
-      //burda logla fail
-    }
     if (isMatch === false) {
+      failLogger.error('Invalid password', { user, ip: '::2', reason: 'Incorrect password.' })
       throw new ApiError(PASS_ERROR.message, PASS_ERROR.statusCode)
-      //burda logla
-      //fail
     }
     const userToken = await TokenDataAccess.getUserToken({ userId: user._id });
     let token;
@@ -71,7 +67,7 @@ class UserService {
     }
     const loggedIn = await UserDataAccess.IsLogged({ userId: user._id });
     if (loggedIn) {
-      successfulLogin( email = user.email, message='basarili', ip='::1',level='info')
+      successLogger.info('User logged in', { user, ip: '::1' })
     }
     return {
       ...user._doc,

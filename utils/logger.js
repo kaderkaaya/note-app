@@ -1,13 +1,18 @@
 const winston = require('winston');
 const fs = require('fs');
-const { combine, timestamp, json } = winston.format;
 
 if (!fs.existsSync('logs')) {
   fs.mkdirSync('logs');
 }
 const logger = winston.createLogger({
   level: 'info',
-  format: combine(timestamp(), json()),
+  format: winston.format.combine(
+    winston.format.colorize(),
+    winston.format.timestamp(),
+    winston.format.printf(({ timestamp, level, message }) => {
+      return `${timestamp} ${level}: ${message} `;
+    })
+  ),
   defaultMeta: {
     service: 'User-Service',
   },
@@ -19,8 +24,4 @@ const logger = winston.createLogger({
   ],
 
 });
-//burda fonksiyon olarak ekledik. aslinda obje olarakta yapabiliriz aynı olur ama ben app dosyasında
-//sürekli calismasini istiyorum.
-module.exports = {
-  createLogger: () => logger
-};
+module.exports = logger;

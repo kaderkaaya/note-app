@@ -26,7 +26,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 //LOGGER
 const LOGGER = require('./utils/logger');
-LOGGER.createLogger();
+LOGGER.info('Server is started');
 app.use(express.json());
 //HELMET
 app.use(helmet());

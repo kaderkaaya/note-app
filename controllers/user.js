@@ -14,7 +14,7 @@ class UserController {
         try {
             const { email, password } = req.body;
             const user = await UserService.login({ email, password });
-            return ErrorHelper.sendSuccess({ code: 200, data: user, res });
+            return ErrorHelper.sendSuccess({ code: 200, data: {user}, res });
         } catch (error) {
             res.status(500).send({ error: `error:${error}` })
         }

@@ -5,15 +5,16 @@ if (!fs.existsSync('logs')) {
     fs.mkdirSync('logs');
 }
 function successfulLogin() {
-    const logFormat = printf(({ level, message, user, ip }) => {
-        return `${message} ${level}: ${user} ${ip}`;
-    });
+    const logFormat = winston.format.combine(
+        winston.format.colorize(),
+        winston.format.timestamp(),
+        winston.format.printf(({ timestamp, level, message, ...meta }) => {
+            return `${timestamp} ${level}: ${message} ${Object.keys(meta).length ? JSON.stringify(meta, null, 2) : ''}`;
+        })
+    )
     return winston.createLogger({
         level: 'info',
-        format: winston.format.combine(
-            winston.format.timestamp(),
-        logFormat,
-          winston.format.json()),
+        format: logFormat,
         defaultMeta: {
             service: 'User-Service',
         },
@@ -27,15 +28,16 @@ function successfulLogin() {
     })
 }
 function failedLogins() {
-    const logFormat = printf(({level, message, user, ip, reason }) => {
-        return `${message} ${level}: ${user} ${ip} ${reason}`;
-    });
+    const logFormat = winston.format.combine(
+        winston.format.colorize(),
+        winston.format.timestamp(),
+        winston.format.printf(({ timestamp, level, message, reason, ...meta }) => {
+            return `${timestamp} ${level}: ${message} ${Object.keys(meta).length ? JSON.stringify(meta, null, 2) : ''} ${reason}`;
+        })
+    )
     return winston.createLogger({
         level: 'info',
-        format: winston.format.combine(
-        winston.format.timestamp(),
-        logFormat,
-        winston.format.json()),
+        format: logFormat,
         defaultMeta: {
             service: 'User-Service',
         },
