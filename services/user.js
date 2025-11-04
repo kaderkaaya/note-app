@@ -12,9 +12,13 @@ const { EMAIL_ERROR,
   USER_ERROR,
   PASS_ERROR,
 } = require('../utils/errors');
-const SEND_EMAIL = process.env.SEND_EMAIL
-const JWT_SECRET = process.env.JWT_SECRET
-const SEND_PASSWORD = process.env.SEND_PASSWORD
+const SEND_EMAIL = process.env.SEND_EMAIL;
+const JWT_SECRET = process.env.JWT_SECRET;
+const SEND_PASSWORD = process.env.SEND_PASSWORD;
+const {
+  successfulLogin,
+  failedLogins
+} = require('../helpers/logginHelper');
 class UserService {
   static async signUp({ email, password }) {
     let mailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -40,14 +44,22 @@ class UserService {
   };
   static async login({ email, password }) {
     const user = await UserDataAccess.getUser({ email });
+    console.log('user', user);
+
     if (!user) {
       throw new ApiError(USER_ERROR.message, USER_ERROR.statusCode);
+      //burda logla fail
     }
     let isMatch;
     const hashedPassword = await UserDataAccess.getUserpass({ userId: user._id });
     isMatch = await bcrypt.compare(password, hashedPassword.password);
+    if(email !== user.email){
+      //burda logla fail
+    }
     if (isMatch === false) {
       throw new ApiError(PASS_ERROR.message, PASS_ERROR.statusCode)
+      //burda logla
+      //fail
     }
     const userToken = await TokenDataAccess.getUserToken({ userId: user._id });
     let token;
@@ -57,7 +69,10 @@ class UserService {
     else {
       token = await TokenDataAccess.generateToken({ userId: user._id });
     }
-    await UserDataAccess.IsLogged({ userId: user._id });
+    const loggedIn = await UserDataAccess.IsLogged({ userId: user._id });
+    if (loggedIn) {
+      successfulLogin( email = user.email, message='basarili', ip='::1',level='info')
+    }
     return {
       ...user._doc,
       token

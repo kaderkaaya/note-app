@@ -3,7 +3,7 @@ const fs = require('fs');
 const { combine, timestamp, json } = winston.format;
 
 if (!fs.existsSync('logs')) {
-  fs.mkdirSync('logs', { recursive: true });
+  fs.mkdirSync('logs');
 }
 const logger = winston.createLogger({
   level: 'info',
