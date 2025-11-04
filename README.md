@@ -94,7 +94,7 @@ note-app/
 4. **Run the app**
 
    ```bash
-   node server.js
+   node index.js
    ```
 
 ---
