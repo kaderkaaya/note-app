@@ -7,6 +7,7 @@ const ApiError = require('../helpers/apiHelper');
 const {
     TOKEN_ERROR
 } = require('../utils/errors');
+
 class TokenDataAccess {
     static async generateToken({ userId }) {
         const token = jwt.sign({ userId }, JWT_KEY, { expiresIn: '1h' });
@@ -15,7 +16,8 @@ class TokenDataAccess {
             userId,
         });
         return { token };
-    }
+    };
+
     static async verifyToken({ token }) {
         try {
             const decode = jwt.verify(token, JWT_KEY);
@@ -31,12 +33,14 @@ class TokenDataAccess {
             }
         }
     };
+
     static async getUserToken({ userId }) {
         const userObjectId = new mongoose.Types.ObjectId(userId);
         const userToken = await TokenModel.findOne(
             { userId: userObjectId }
         ).sort({ createdAt: -1 })
         return userToken;
-    }
+    };
+    
 }
 module.exports = TokenDataAccess;

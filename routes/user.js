@@ -11,32 +11,40 @@ const { validateSchemaBody,
 
 router.post('/signUp',
     validateSchemaBody(UserSchema.signUp),
-    //async handler konusuna çalışıldı.
     asyncHandler(UserController.signUp));
+
 router.post('/login',
     limiter,
     validateSchemaBody(UserSchema.login),
     UserController.login);
+
 router.post('/updateUser',
     limiter,
     validateSchemaBody(UserSchema.updateUser),
     UserController.updateUser);
+
 router.post('/logOut',
     validateSchemaBody(UserSchema.logOut),
     UserController.logOut);
+
 router.get('/getselfUser',
     validateSchemaQuery(UserSchema.getselfUser),
     UserController.getselfUser);
+
 router.post('/uploadProfileImg',
     validateSchemaBody(UserSchema.uploadProfileImg),
     UserController.uploadProfileImg);
+
 router.post('/forgotPassword',
     validateSchemaBody(UserSchema.forgotPassword),
     UserController.forgotPassword);
+
 router.post('/resetPassword',
     validateSchemaBody(UserSchema.resetPassword),
     UserController.resetPassword);
+
 router.get('/getUserIP',
     validateSchemaQuery(UserSchema.getUserIP),
     UserController.getUserIP);
+    
 module.exports = router;

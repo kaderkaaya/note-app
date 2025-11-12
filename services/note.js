@@ -7,10 +7,12 @@ class NoteService {
     static async addNote({ ownerId, title, body, isPrivate, tags }) {
         const note = await NoteDataAccess.addNote({ ownerId, title, body, isPrivate, tags });
         return { note };
-    }
+    };
+
     static async getNote({ ownerId, noteId }) {
         return await NoteDataAccess.getNote({ ownerId, noteId });
-    }
+    };
+
     static async updateNote({ ownerId, noteId, title, body, isPrivate, tags, noteStatus }) {
         const note = await NoteDataAccess.getNote({ ownerId, noteId });
         if (note) {
@@ -21,12 +23,14 @@ class NoteService {
         }
 
     };
+
     static async getAllNotes({ ownerId, page, limit, search }) {
         const user = await UserDataAccss.getUserWithId({ ownerId });
         if (user) {
             return await NoteDataAccess.getAllNotes({ ownerId, page, limit, search });
         };
     };
+
     static async deleteNote({ ownerId, noteId, noteStatus }) {
          const note = await NoteDataAccess.getNote({ ownerId, noteId });
          if (note) {
@@ -36,5 +40,7 @@ class NoteService {
             throw new ApiError(NOTE_ERROR.message, NOTE_ERROR.statusCode)
         }
     };
+
 }
+
 module.exports = NoteService;

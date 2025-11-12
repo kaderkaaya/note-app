@@ -21,6 +21,7 @@ const {
 } = require('../helpers/logginHelper');
 const successLogger = successfulLogin();
 const failLogger = failedLogins();
+
 class UserService {
   static async signUp({ email, password }) {
     let mailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -44,6 +45,7 @@ class UserService {
       }
     }
   };
+
   static async login({ email, password }) {
     const user = await UserDataAccess.getUser({ email });
     if (!user) {
@@ -73,7 +75,8 @@ class UserService {
       ...user._doc,
       token
     };
-  }
+  };
+
   static async updateUser({ email, password, name, userId }) {
     const updatedUser = await UserDataAccess.updateUser({ email, name, password, userId });
     return { updatedUser };
@@ -103,8 +106,8 @@ class UserService {
       },
     });
     await transporter.sendMail(mailOptions(email = user.email, resetUrl));
+  };
 
-  }
   static async resetPassword({ password, userId, token }) {
     const { user } = await UserDataAccess.getUserWithId({ ownerId: userId });
     if (!user) {
@@ -117,6 +120,8 @@ class UserService {
       await UserDataAccess.updateUserPassword({ hashedPassword, userId });
     }
     return { user }
-  }
+  };
+
 }
+
 module.exports = UserService;

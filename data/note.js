@@ -13,7 +13,8 @@ class NoteDataAccess {
             noteStatus: NOTE_STATUS.ACTIVE,
         });
         return note;
-    }
+    };
+
     static async getNote({ ownerId, noteId }) {
         const note = await NoteModel.findOne({
             ownerId,
@@ -21,6 +22,7 @@ class NoteDataAccess {
         });
         return { note };
     };
+
     static async updateNote({ ownerId, noteId, title, body, isPrivate, tags, noteStatus }) {
         const updateNote = {};
         if (title) {
@@ -52,6 +54,7 @@ class NoteDataAccess {
         );
         return { note }
     };
+
     static async getAllNotes({ ownerId, page, limit, search }) {
         const objectOwnerId = new mongoose.Types.ObjectId(ownerId);
         const limitNum = Number(limit)
@@ -99,6 +102,7 @@ class NoteDataAccess {
         };
 
     };
+
     static async deleteNote({ ownerId, noteId, noteStatus }) {
         const objectOwnerId = new mongoose.Types.ObjectId(ownerId);
         const objectNoteId = new mongoose.Types.ObjectId(noteId);
@@ -113,6 +117,7 @@ class NoteDataAccess {
             { new: true }
         );
         return { note }
-    }
+    };
+    
 }
 module.exports = NoteDataAccess;

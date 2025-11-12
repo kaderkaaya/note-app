@@ -26,7 +26,8 @@ function successfulLogin() {
             })
         ],
     })
-}
+};
+
 function failedLogins() {
     const logFormat = winston.format.combine(
         winston.format.colorize(),

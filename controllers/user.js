@@ -4,12 +4,14 @@ const UserSchema = require('../schemas/userSchema');
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
+
 class UserController {
     static async signUp(req, res, next) {
         const { email, password } = req.body;
         const user = await UserService.signUp({ email, password });
         return ErrorHelper.sendSuccess({ code: 201, data: user, res })
     };
+
     static async login(req, res) {
         try {
             const { email, password } = req.body;
@@ -19,6 +21,7 @@ class UserController {
             res.status(500).send({ error: `error:${error}` })
         }
     };
+
     static async updateUser(req, res) {
         try {
             const { email, password, name, userId } = req.body;
@@ -27,7 +30,8 @@ class UserController {
         } catch (error) {
             res.status(500).send({ error: `${error}` })
         }
-    }
+    };
+
     static async logOut(req, res) {
         try {
             const { userId } = req.body;
@@ -37,6 +41,7 @@ class UserController {
             res.status(500).send({ error: `${error}` })
         }
     };
+
     static async getselfUser(req, res) {
         try {
             const { userId } = req.query;
@@ -46,6 +51,7 @@ class UserController {
             res.status(500).send({ error: `${error}` })
         }
     };
+
     static async uploadProfileImg(req, res) {
         try {
             const uploadDir = path.join(__dirname, '../utils/uploads');
@@ -78,6 +84,7 @@ class UserController {
             res.status(500).send({ error: `${error}` })
         }
     };
+
     static async forgotPassword(req, res) {
         try {
             const { email } = req.body;
@@ -87,6 +94,7 @@ class UserController {
             res.status(500).send({ error: `${error}` })
         }
     };
+
     static async resetPassword(req, res) {
         try {
             const { userId, token } = req.body;
@@ -97,6 +105,7 @@ class UserController {
             res.status(500).send({ error: `${error}` })
         }
     };
+
     static async getUserIP(req, res) {
         try {
             const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -105,6 +114,7 @@ class UserController {
             res.status(500).send({ error: `${error}` })
         }
     };
+    
 }
 
 module.exports = UserController;

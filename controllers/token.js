@@ -1,5 +1,6 @@
 const { sendSuccess, sendError } = require('../helpers/errorHelper');
 const TokenService = require('../services/token');
+
 class TokenController {
   static async generateToken(req, res, next) {
     try {
@@ -10,6 +11,7 @@ class TokenController {
       return sendError({ error, res });
     }
   };
+
   static async verifyAndRefreshToken(req, res, next) {
     try {
       const { token } = req.body;
@@ -19,5 +21,7 @@ class TokenController {
       return sendError({ error, res });
     }
   };
+  
 }
+
 module.exports = TokenController;
