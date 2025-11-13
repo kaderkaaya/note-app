@@ -13,7 +13,7 @@ class UserDataAccess {
     return user;
   };
 
-  static async getUserpass({ userId }) {
+  static async getUserById({ userId }) {
     return await UserModel.findById({
       _id: userId
     });
@@ -37,14 +37,14 @@ class UserDataAccess {
       updateData.email = email
     }
     if (password) {
-      const hashedPass = await this.hashedPass({ userId, password });
+      const hashedPass = await this.hashPassword({ userId, password });
       updateData.hashedPass = hashedPass;
     }
 
     return await UserModel.findByIdAndUpdate({ _id: userId }, updateData)
   };
 
-  static async hashedPass({ userId, password }) {
+  static async hashPassword({ password }) {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     return hashedPassword;
   };
@@ -54,20 +54,6 @@ class UserDataAccess {
       { _id: userId },
       { userStatus: 0 }
     );
-    return { user }
-  };
-
-  static async getselfUser({ userId }) {
-    const user = await UserModel.findById({
-      _id: userId
-    });
-    return { user }
-  };
-
-  static async getUserWithId({ ownerId }) {
-    const user = await UserModel.findById({
-      _id: ownerId
-    });
     return { user }
   };
 

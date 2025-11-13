@@ -18,7 +18,7 @@ const SEND_PASSWORD = process.env.SEND_PASSWORD;
 const {
   successfulLogin,
   failedLogins
-} = require('../helpers/logginHelper');
+} = require('../helpers/logHelper');
 const successLogger = successfulLogin();
 const failLogger = failedLogins();
 
@@ -53,7 +53,7 @@ class UserService {
       throw new ApiError(USER_ERROR.message, USER_ERROR.statusCode);
     }
     let isMatch;
-    const hashedPassword = await UserDataAccess.getUserpass({ userId: user._id });
+    const hashedPassword = await UserDataAccess.getUserById({ userId: user._id });
     isMatch = await bcrypt.compare(password, hashedPassword.password);
     if (isMatch === false) {
       failLogger.error('Invalid password', { user, ip: '::2', reason: 'Incorrect password.' })
@@ -71,6 +71,7 @@ class UserService {
     if (loggedIn) {
       successLogger.info('User logged in', { user, ip: '::1' })
     }
+  
     return {
       ...user._doc,
       token
@@ -81,15 +82,19 @@ class UserService {
     const updatedUser = await UserDataAccess.updateUser({ email, name, password, userId });
     return { updatedUser };
   };
+
   static async logOut({ userId }) {
     return await UserDataAccess.logOut({ userId });
   };
+
   static async getselfUser({ userId }) {
-    return await UserDataAccess.getselfUser({ userId });
+    return await UserDataAccess.getUserById({ userId });
   };
+
   static async uploadProfileImg({ userId, imagePath }) {
     return await UserDataAccess.uploadProfileImg({ userId, imagePath });
   };
+
   static async forgotPassword({ email }) {
     const user = await UserDataAccess.getUser({ email });
     if (!user) {
@@ -109,14 +114,14 @@ class UserService {
   };
 
   static async resetPassword({ password, userId, token }) {
-    const { user } = await UserDataAccess.getUserWithId({ ownerId: userId });
+    const { user } = await UserDataAccess.getUserById({ ownerId: userId });
     if (!user) {
       throw new ApiError(USER_ERROR.message, USER_ERROR.statusCode)
     }
     const secret = JWT_SECRET + user.password;
     const verifyToken = jwt.verify(token, secret);
     if (verifyToken) {
-      const hashedPassword = await UserDataAccess.hashedPass({ password });
+      const hashedPassword = await UserDataAccess.hashPassword({ password });
       await UserDataAccess.updateUserPassword({ hashedPassword, userId });
     }
     return { user }

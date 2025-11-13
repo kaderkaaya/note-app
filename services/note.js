@@ -25,18 +25,18 @@ class NoteService {
     };
 
     static async getAllNotes({ ownerId, page, limit, search }) {
-        const user = await UserDataAccss.getUserWithId({ ownerId });
+        const user = await UserDataAccss.getUserById({ userId: ownerId });
         if (user) {
             return await NoteDataAccess.getAllNotes({ ownerId, page, limit, search });
         };
     };
 
     static async deleteNote({ ownerId, noteId, noteStatus }) {
-         const note = await NoteDataAccess.getNote({ ownerId, noteId });
-         if (note) {
-             return NoteDataAccess.deleteNote({ ownerId, noteId, noteStatus })
-         }
-         else {
+        const note = await NoteDataAccess.getNote({ ownerId, noteId });
+        if (note) {
+            return NoteDataAccess.deleteNote({ ownerId, noteId, noteStatus })
+        }
+        else {
             throw new ApiError(NOTE_ERROR.message, NOTE_ERROR.statusCode)
         }
     };
