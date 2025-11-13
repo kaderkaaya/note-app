@@ -6,6 +6,7 @@ class ErrorHelper {
 
     if (error instanceof TokenExpiredError) {
       console.log('*********** ->AAAAAAAAAAAAAA:', TokenExpiredError);
+
       return res.status(statusCode).send({
         success: false,
         errorMessage: 'Unauthorized',
@@ -21,9 +22,11 @@ class ErrorHelper {
         errors,
         code
       });
+
       return error;
     }
     console.log('*********** ->CCCCCCCCCCCCCC:', statusCode);
+
     return res.status(statusCode).send({
       success: false,
       errMessage,
@@ -32,6 +35,7 @@ class ErrorHelper {
     });
   };
   static async sendSuccess({ res, data, code }) {
+    
     return res.status(code).send({
       success: true,
       data,

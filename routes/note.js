@@ -7,27 +7,27 @@ const { validateSchemaBody,
 } = require('../helpers/schemaHelper');
 const asyncHandler = require('express-async-handler');
 
-router.post('/addNote',
+router.post('/add-note',
     validateSchemaBody(NoteSchema.addNote),
     asyncHandler(NoteContoller.addNote),
 );
 
-router.get('/getNote',
+router.get('/get-note',
     validateSchemaQuery(NoteSchema.getNote),
     NoteContoller.getNote,
 );
 
-router.post('/updateNote',
+router.post('/update-note',
     validateSchemaBody(NoteSchema.updateNote),
     NoteContoller.updateNote,
 );
 
-router.get('/getAllNotes',
+router.get('/get-alll-notes',
     validateSchemaQuery(NoteSchema.getAllNotes),
     NoteContoller.getAllNotes,
 );
 
-router.post('/deleteNote',
+router.post('/delete-note',
     validateSchemaBody(NoteSchema.deleteNote),
     NoteContoller.deleteNote,
 );

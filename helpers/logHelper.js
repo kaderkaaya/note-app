@@ -12,6 +12,7 @@ function successfulLogin() {
             return `${timestamp} ${level}: ${message} ${Object.keys(meta).length ? JSON.stringify(meta, null, 2) : ''}`;
         })
     )
+    
     return winston.createLogger({
         level: 'info',
         format: logFormat,
@@ -36,6 +37,7 @@ function failedLogins() {
             return `${timestamp} ${level}: ${message} ${Object.keys(meta).length ? JSON.stringify(meta, null, 2) : ''} ${reason}`;
         })
     )
+
     return winston.createLogger({
         level: 'info',
         format: logFormat,

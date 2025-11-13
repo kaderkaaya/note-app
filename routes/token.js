@@ -7,11 +7,11 @@ const {
 const TokenSchema = require('../schemas/tokenSchema');
 
 const UserController = require('../controllers/token');
-router.post('/generateToken',
+router.post('/generate-token',
     validateSchemaBody(TokenSchema.generateToken),
     UserController.generateToken);
 
-router.post('/verifyAndRefreshToken',
+router.post('/verify-and-refresh-token',
     validateSchemaBody(TokenSchema.verifyAndRefreshToken),
     UserController.verifyAndRefreshToken);
 

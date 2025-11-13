@@ -9,7 +9,7 @@ const { validateSchemaBody,
     validateSchemaQuery,
 } = require('../helpers/schemaHelper');
 
-router.post('/signUp',
+router.post('/sign-up',
     validateSchemaBody(UserSchema.signUp),
     asyncHandler(UserController.signUp));
 
@@ -18,32 +18,32 @@ router.post('/login',
     validateSchemaBody(UserSchema.login),
     UserController.login);
 
-router.post('/updateUser',
+router.post('/update-user',
     limiter,
     validateSchemaBody(UserSchema.updateUser),
     UserController.updateUser);
 
-router.post('/logOut',
+router.post('/log-out',
     validateSchemaBody(UserSchema.logOut),
     UserController.logOut);
 
-router.get('/getselfUser',
+router.get('/getself-user',
     validateSchemaQuery(UserSchema.getselfUser),
     UserController.getselfUser);
 
-router.post('/uploadProfileImg',
+router.post('/upload-profile-img',
     validateSchemaBody(UserSchema.uploadProfileImg),
     UserController.uploadProfileImg);
 
-router.post('/forgotPassword',
+router.post('/forgot-password',
     validateSchemaBody(UserSchema.forgotPassword),
     UserController.forgotPassword);
 
-router.post('/resetPassword',
+router.post('/reset-password',
     validateSchemaBody(UserSchema.resetPassword),
     UserController.resetPassword);
 
-router.get('/getUserIP',
+router.get('/get-user-IP',
     validateSchemaQuery(UserSchema.getUserIP),
     UserController.getUserIP);
     
