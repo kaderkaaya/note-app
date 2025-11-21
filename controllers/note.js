@@ -14,17 +14,17 @@ class NoteController {
             const note = await NoteService.getNote({ ownerId, noteId });
             return ErrorHelper.sendSuccess({ code: 201, data: note, res })
         } catch (error) {
-            res.status(500).send({ error: `error:${error}` })
+            ErrorHelper.sendError(res, error.message, 500)
         }
     };
 
     static async updateNote(req, res, next) {
         try {
             const { ownerId, noteId, title, body, isPrivate, tags, noteStatus } = req.body;
-            const note = await NoteService.updateNote({ ownerId, noteId, title, body, isPrivate, tags, noteStatus });   
+            const note = await NoteService.updateNote({ ownerId, noteId, title, body, isPrivate, tags, noteStatus });
             return ErrorHelper.sendSuccess({ code: 201, data: note, res })
         } catch (error) {
-            res.status(500).send({ error: `error:${error}` })
+            ErrorHelper.sendError(res, error.message, 500)
         }
     };
 
@@ -34,7 +34,7 @@ class NoteController {
             const notes = await NoteService.getAllNotes({ ownerId, page, limit, search });
             return ErrorHelper.sendSuccess({ code: 201, data: notes, res })
         } catch (error) {
-            res.status(500).send({ error: `error:${error}` })
+            ErrorHelper.sendError(res, error.message, 500)
         }
     };
 
@@ -44,9 +44,9 @@ class NoteController {
             const note = await NoteService.deleteNote({ ownerId, noteId, noteStatus });
             return ErrorHelper.sendSuccess({ code: 201, data: note, res })
         } catch (error) {
-            res.status(500).send({ error: `error:${error}` })
+            ErrorHelper.sendError(res, error.message, 500)
         }
     };
-    
+
 }
 module.exports = NoteController;

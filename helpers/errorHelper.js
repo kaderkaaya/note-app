@@ -1,41 +1,21 @@
 const { TokenExpiredError } = require("jsonwebtoken")
 class ErrorHelper {
-  static async sendError({ res, error, errorMessage, code }) {
-    const { statusCode = 500, message, errors } = error;
-    const errMessage = errorMessage || message;
-
+  static async sendError(res, error, statusCode) {
     if (error instanceof TokenExpiredError) {
-      console.log('*********** ->AAAAAAAAAAAAAA:', TokenExpiredError);
-
-      return res.status(statusCode).send({
+      return res.status(statusCode).json({
         success: false,
-        errorMessage: 'Unauthorized',
-        errors,
+        error: 'Unauthorized',
         statusCode: 401
       })
     }
-    if (code) {
-      console.log('*********** ->BBBBBBBBBBBBB:', code);
-      const error = res.status(code).send({
-        success: false,
-        errorMessage: message,
-        errors,
-        code
-      });
-
-      return error;
-    }
-    console.log('*********** ->CCCCCCCCCCCCCC:', statusCode);
-
-    return res.status(statusCode).send({
+    return res.status(statusCode).json({
       success: false,
-      errMessage,
-      errors,
+      error,
       statusCode
     });
   };
   static async sendSuccess({ res, data, code }) {
-    
+
     return res.status(code).send({
       success: true,
       data,

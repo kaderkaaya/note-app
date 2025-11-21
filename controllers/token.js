@@ -8,7 +8,7 @@ class TokenController {
       const token = await TokenService.generateToken({ userId });
       return sendSuccess({ res, data: token, code: 201 });
     } catch (error) {
-      return sendError({ error, res });
+      ErrorHelper.sendError(res, error.message, 500)
     }
   };
 
@@ -18,10 +18,10 @@ class TokenController {
       const { newToken } = await TokenService.verifyAndRefreshToken({ token });
       return sendSuccess({ res, data: newToken, code: 200 });
     } catch (error) {
-      return sendError({ error, res });
+      ErrorHelper.sendError(res, error.message, 500)
     }
   };
-  
+
 }
 
 module.exports = TokenController;
