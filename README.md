@@ -2,104 +2,155 @@
 
 # 📝 Note App (Node.js + Express + MongoDB)
 
-A simple yet powerful **RESTful API** built with Node.js, Express.js, and MongoDB.
-This project allows users to register, log in, manage notes, and securely reset their passwords.
+A powerful and secure **RESTful API** built with Node.js, Express.js, and MongoDB.
+This application provides user authentication, secure password reset, note management, advanced validation, brute-force protection, file uploads, and structured logging.
 
 ---
 
 ## 🚀 Features
 
-* User registration and authentication (JWT-based)
+* User registration & login (JWT-based authentication)
 * Secure password hashing using **bcrypt**
-* Password reset with **email verification link**
-* Create, update, delete, and view notes
-* Centralized error handling with custom `AppError` and `ErrorHelper`
-* Environment variables managed with **dotenv**
-* Protected `.env` and other sensitive files via `.gitignore`
-* **System-level login logging** using **Winston**
+* Email verification & password reset (via **Nodemailer**)
+* Create, update, delete, and retrieve notes
+* Request validation with **express-validator** & **Joi**
+* Brute-force protection with **rate limiting**
+* File upload handling using **Multer**
+* Centralized helpers, services, controllers, and schemas
+* Detailed logging using **Winston**
+* Secure environment variables using **dotenv**
+* Full Postman collection included
 
 ---
 
-## 🏗️ Project Architecture
+## 🏗️ Project Structure
 
 ```
 note-app/
 ├── controllers/
-│   └── userController.js
-├── models/
-│   ├── user.js
-│   └── note.js
-├── services/
-│   └── userService.js
+│   ├── note.js
+│   ├── token.js
+│   └── user.js
+├── data/
+│   ├── note.js
+│   ├── token.js
+│   └── user.js
 ├── helpers/
-│   ├── ErrorHelper.js
-│   ├── AppError.js
-│   └── emailHelper.js
-├── middlewares/
-│   ├── authMiddleware.js
-│   └── errorMiddleware.js
-├── logs/
-│   ├── login-success.log
-│   └── login-failed.log
+│   ├── apiHelper.js
+│   ├── bruteforceHelper.js
+│   ├── db.js
+│   ├── errorHelper.js
+│   ├── logHelper.js
+│   └── schemaHelper.js
+├── models/
+│   ├── note.js
+│   ├── token.js
+│   └── user.js
+├── postman/
+│   └──collection.json
 ├── routes/
-│   ├── userRoutes.js
-│   └── noteRoutes.js
+│   ├── note.js
+│   ├── token.js
+│   └── user.js
+├── schemas/
+│   ├── noteSchema.js
+│   ├── tokenSchema.js
+│   └── userSchema.js
+├── services/
+│   ├── note.js
+│   ├── token.js
+│   └── user.js
 ├── utils/
-│   └── loginLogger.js
+│   ├── uploads/
+│   ├── constant.js
+│   ├── errors.js
+│   ├── logger.js
+│   └── mail.js
 ├── index.js
-└── .env (ignored by Git)
+└── .env
 ```
 
 ---
 
-## ⚙️ Technologies
+## ⚙️ Technologies Used
 
-| Technology             | Purpose                         |
-| ---------------------- | ------------------------------- |
-| **Node.js**            | Runtime environment             |
-| **Express.js**         | Web framework                   |
-| **MongoDB + Mongoose** | Database & ODM                  |
-| **JWT (jsonwebtoken)** | Authentication                  |
-| **Bcrypt.js**          | Password hashing                |
-| **Nodemailer**         | Email delivery                  |
-| **Winston**            | System-level logging            |
-| **dotenv**             | Environment variable management |
+| Technology / Package      | Purpose                         |
+| ------------------------- | ------------------------------- |
+| **Node.js**               | Runtime environment             |
+| **Express.js**            | Backend framework               |
+| **MongoDB + Mongoose**    | Database & ODM                  |
+| **jsonwebtoken**          | JWT authentication              |
+| **bcrypt**                | Password hashing                |
+| **nodemailer**            | Email sending                   |
+| **winston**               | Advanced logging                |
+| **dotenv**                | Environment variable management |
+| **cors**                  | CORS configuration              |
+| **helmet**                | Security headers                |
+| **multer**                | File uploads                    |
+| **express-validator**     | Request validation              |
+| **joi**                   | Schema validation               |
+| **express-rate-limit**    | Brute-force protection          |
+| **express-async-handler** | Async error handling            |
+
+---
+
+## 🔑 Environment Variables (`.env`)
+
+Create a `.env` file in the project root:
+
+```
+PORT=3000
+JWT_SECRET=your_jwt_secret_key
+MONGO_URI=your_mongodb_connection_string
+SEND_EMAIL=your_email_address
+SEND_PASSWORD=your_email_password
+```
+
+---
+
+## 📬 Postman Collection
+
+A Postman collection is included for easy testing:
+
+```
+/postman/collection.json
+```
+
+To import:
+
+**Postman → Import → File → collection.json**
 
 ---
 
 ## 🧩 Installation & Setup
 
-1. **Clone the repository**
+### 1. Clone the repository
 
-   ```bash
-   git clone https://github.com/kaderkaaya/note-app.git
-   ```
+```bash
+git clone https://github.com/kaderkaaya/note-app.git
+```
 
-2. **Install dependencies**
+### 2. Install dependencies
 
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
-3. **Create your `.env` file**
+### 3. Create your `.env` file
 
-   ```bash
-   PORT=3000
-   MONGO_URI=mongodb+srv://...
-   JWT_SECRET=your_secret_key
-   EMAIL=your_email
-   EMAIL_PASSWORD=your_email_password
-   ```
+(Use the variables shown above.)
 
-4. **Run the app**
+### 4. Start the server
 
-   ```bash
-   node index.js
-   ```
+```bash
+node index.js
+```
 
 ---
 
 ## 👨‍💻 Developed by
 
 **Kader Kaya**
-[GitHub @kaderkaaya](https://github.com/kaderkaaya)
+GitHub: [@kaderkaaya](https://github.com/kaderkaaya)
+
+---
